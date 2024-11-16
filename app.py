@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 class Patient(db.Model):
     __tablename__ = 'patients'
     patient_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    caretaker_id = db.Column(db.Integer)
+    caretaker_id = db.Column(db.Integer, db.ForeignKey('caretakers.caretaker_id'), nullable=True)
     first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50), nullable=False)
     date_of_birth = db.Column(db.Date, nullable=False)
@@ -31,15 +31,21 @@ class Patient(db.Model):
             "gender": self.gender,
             "phone": self.phone,
         }
+
+
 class Caretaker(db.Model):
     __tablename__ = 'caretakers'
     caretaker_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
 
+    # Relationship to patients
+    patients = db.relationship('Patient', backref='caretaker', lazy=True)
+
     def to_dict(self):
         return {
             "caretaker_id": self.caretaker_id,
-            "name": self.name
+            "name": self.name,
+            "patients": [patient.patient_id for patient in self.patients]  # List of patient IDs
         }
 # Initialize the database
 @app.before_first_request
@@ -63,9 +69,6 @@ def add_patient():
         date_of_birth=data['date_of_birth'],
         gender=data['gender'],
         phone=data['phone'],
-        email=data['email'],
-        emergency_contact=data.get('emergency_contact'),
-        emergency_phone=data.get('emergency_phone')
     )
     db.session.add(new_patient)
     db.session.commit()
@@ -94,6 +97,35 @@ def delete_patient(patient_id):
         db.session.commit()
         return jsonify({"message": "Patient deleted successfully"})
     return jsonify({"error": "Patient not found"}), 404
+
+# Add a caretaker by ID
+@app.route("/caretakers", methods=["POST"])
+def add_caretaker():
+    data = request.json
+    new_caretaker = Caretaker(name=data['name'])
+    db.session.add(new_caretaker)
+    db.session.commit()
+    return jsonify({"message": "Caretaker added successfully", "caretaker": new_caretaker.to_dict()}), 201
+
+#Get all caretakers
+@app.route("/caretakers", methods=["GET"])
+def get_caretakers():
+    caretakers = Caretaker.query.all()
+    return jsonify([caretaker.to_dict() for caretaker in caretakers])
+
+#Assign a Patient to a Caretaker
+@app.route("/patients/<int:patient_id>/assign_caretaker/<int:caretaker_id>", methods=["PATCH"])
+def assign_caretaker(patient_id, caretaker_id):
+    patient = Patient.query.get(patient_id)
+    caretaker = Caretaker.query.get(caretaker_id)
+    if not patient:
+        return jsonify({"error": "Patient not found"}), 404
+    if not caretaker:
+        return jsonify({"error": "Caretaker not found"}), 404
+
+    patient.caretaker_id = caretaker_id
+    db.session.commit()
+    return jsonify({"message": "Caretaker assigned successfully", "patient": patient.to_dict()})
 
 # Run the server
 if __name__ == "__main__":
