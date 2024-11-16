@@ -1,5 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from flask import render_template
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -19,6 +21,8 @@ class Patient(db.Model):
     date_of_birth = db.Column(db.Date, nullable=False)
     gender = db.Column(db.String(20), nullable=False)
     phone = db.Column(db.String(20), nullable=False)
+    conditions = db.Column(db.Text, nullable=True) 
+    notes = db.Column(db.Text, nullable=True) 
     
 
     def to_dict(self):
@@ -30,6 +34,8 @@ class Patient(db.Model):
             "date_of_birth": self.date_of_birth.isoformat(),
             "gender": self.gender,
             "phone": self.phone,
+            "conditions": self.conditions,
+            "notes": self.notes
         }
 
 
@@ -56,22 +62,31 @@ with app.app_context():
 # Home route
 @app.route("/")
 def home():
-    return "Welcome to the Patients Management API!"
+    return render_template('test.html')
 
 # Create a new patient
 @app.route("/patients", methods=["POST"])
 def add_patient():
-    data = request.json
-    new_patient = Patient(
-        first_name=data['first_name'],
-        last_name=data['last_name'],
-        date_of_birth=data['date_of_birth'],
-        gender=data['gender'],
-        phone=data['phone'],
-    )
-    db.session.add(new_patient)
-    db.session.commit()
-    return jsonify({"message": "Patient added successfully", "patient": new_patient.to_dict()}), 201
+    try:
+        data = request.json
+        # Convert the date string to a Python date object
+        date_of_birth = datetime.strptime(data['date_of_birth'], '%Y-%m-%d').date()
+        
+        new_patient = Patient(
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            date_of_birth=date_of_birth,
+            gender=data['gender'],
+            phone=data['phone'],
+            conditions=data.get('conditions', ''),  
+            notes=data.get('notes', '')
+        )
+        db.session.add(new_patient)
+        db.session.commit()
+        return jsonify({"message": "Patient added successfully", "patient": new_patient.to_dict()}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 400
 
 
 # Get all patients
