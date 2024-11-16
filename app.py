@@ -73,6 +73,7 @@ def add_patient():
     db.session.commit()
     return jsonify({"message": "Patient added successfully", "patient": new_patient.to_dict()}), 201
 
+
 # Get all patients
 @app.route("/patients", methods=["GET"])
 def get_patients():
