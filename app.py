@@ -1,9 +1,15 @@
-from flask import Flask, jsonify, request
+import google.generativeai as genai
+import os
+from flask import Flask, jsonify, request, render_template
 from flask_sqlalchemy import SQLAlchemy
-from flask import render_template
 from datetime import datetime
 
+
 app = Flask(__name__)
+
+genai.configure(api_key='AIzaSyDxQuot2fA5Ks1OrL_QdN_fP9YjAibGCQ0')
+
+
 
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hospital.db'  # SQLite database file
@@ -62,7 +68,7 @@ with app.app_context():
 # Home route
 @app.route("/")
 def home():
-    return render_template('test.html')
+    return render_template('hugging_face_test.html')
 
 # Create a new patient
 @app.route("/patients", methods=["POST"])
@@ -142,6 +148,21 @@ def assign_caretaker(patient_id, caretaker_id):
     db.session.commit()
     return jsonify({"message": "Caretaker assigned successfully", "patient": patient.to_dict()})
 
+#LLM accessor
+@app.route('/analyze', methods=['POST'])
+def analyze():
+    try:
+        data = request.get_json()
+        input_text = data['text']
+        
+        # Generate response using the medical pipeline
+        our_system_prompt = "\nYou are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.\n\nIf a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.\n"
+        prompt = f"{our_system_prompt}\n\n{input_text}"
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        response = model.generate_content(prompt)
+        return jsonify({'result': response.text})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 # Run the server
 if __name__ == "__main__":
     app.run(debug=True)
