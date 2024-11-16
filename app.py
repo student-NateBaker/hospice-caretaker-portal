@@ -48,8 +48,7 @@ class Caretaker(db.Model):
             "patients": [patient.patient_id for patient in self.patients]  # List of patient IDs
         }
 # Initialize the database
-@app.before_first_request
-def create_tables():
+with app.app_context():
     db.create_all()
 
 # Routes
