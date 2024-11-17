@@ -10,8 +10,8 @@ JavaScript: Manages dynamic content and interactivity on the front-end.
 
 **Prerequisites**
 To run this web app (server-side using app.py), ensure you have the following installed on your machine:
-
-python
-flask
-flask-sqlalchemy
-google-generativeai
+<br/><br/>
+python <br/>
+flask <br/>
+flask-sqlalchemy <br/>
+google-generativeai <br/>
