@@ -1,5 +1,4 @@
 import google.generativeai as genai
-import os
 from flask import Flask, jsonify, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -68,7 +67,31 @@ with app.app_context():
 # Home route
 @app.route("/")
 def home():
-    return render_template('hugging_face_test.html')
+    return render_template('landingPage.html')
+
+@app.route("/bothsignup")
+def bothSignUp():
+    return render_template('bothSignIn.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/addpatient')
+def patient():
+    return render_template('register_patient_form.html')
+
+@app.route('/addcaretaker')
+def caretaker():
+    return render_template('register_caretaker_form.html')
+
+@app.route("/chatbot")
+def chatbot():
+    return render_template('chatbot2.html')
 
 # Create a new patient
 @app.route("/patients", methods=["POST"])
@@ -122,11 +145,27 @@ def delete_patient(patient_id):
 # Add a caretaker by ID
 @app.route("/caretakers", methods=["POST"])
 def add_caretaker():
-    data = request.json
-    new_caretaker = Caretaker(name=data['name'])
-    db.session.add(new_caretaker)
-    db.session.commit()
-    return jsonify({"message": "Caretaker added successfully", "caretaker": new_caretaker.to_dict()}), 201
+    try:
+        # Get the JSON data from the request
+        data = request.get_json()
+
+        # Check if the name field is provided
+        if not data or 'name' not in data:
+            return jsonify({"error": "Caretaker name is required"}), 400
+
+        # Create a new Caretaker instance
+        new_caretaker = Caretaker(name=data['name'])
+
+        # Add to the database
+        db.session.add(new_caretaker)
+        db.session.commit()
+
+        # Return the newly created caretaker as a response
+        return jsonify(new_caretaker.to_dict()), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 500
 
 #Get all caretakers
 @app.route("/caretakers", methods=["GET"])

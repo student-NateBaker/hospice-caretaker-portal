@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caretaker Dashboard</title>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h2>Welcome, <span id="caretakerName"></span></h2>
+        </header>
+
+        <main>
+            <!-- Patients List Section -->
+            <section class="patients-section">
+                <h3>Your Patients</h3>
+                <div id="patientsList"></div> <!-- Changed from ul to div to match JS -->
+            </section>
+
+            <!-- Patient Details Section -->
+            <section id="patientDetails" class="hidden">
+                <h3>Patient Details</h3>
+                <div class="patient-info">
+                    <p><strong>Name:</strong> <span id="patientName"></span></p>
+                    <p><strong>Date of Birth:</strong> <span id="patientDOB"></span></p>
+                    <p><strong>Gender:</strong> <span id="patientGender"></span></p>
+                    <p><strong>Phone:</strong> <span id="patientPhone"></span></p>
+                    <p><strong>Conditions:</strong> <span id="patientConditions"></span></p>
+                    <p><strong>Notes:</strong> <span id="patientNotes"></span></p>
+                </div>
+
+                <!-- Added Caretaker Assignment Section -->
+                <div class="caretaker-assignment">
+                    <h4>Assign Caretaker</h4>
+                    <select id="caretakerSelect">
+                        <option value="">Select Caretaker</option>
+                    </select>
+                </div>
+
+                <button class="back-button" onclick="document.getElementById('patientDetails').classList.add('hidden')">
+                    Back to Patients List
+                </button>
+            </section>
+        </main>
+    </div>
+
+    <script src="static/js/script.js"></script>
+</body>
+</html>

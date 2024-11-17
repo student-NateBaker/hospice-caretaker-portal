@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Entry Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+        .success {
+            color: green;
+            margin-top: 10px;
+        }
+        .section-header {
+            margin-top: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <h1>Caretaker Entry Form</h1>
+    <form id="caretakerForm">
+        <h2 class="section-header">Personal Information</h2>
+        <div class="form-group">
+            <label for="caretakerName">Name</label>
+            <input type="text" id="caretakerName" name="caretakerName" required>
+        </div>
+
+
+        <button type="submit">Submit</button>
+    </form>
+    <div id="message"></div>
+
+    <script>
+        document.getElementById('caretakerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const messageDiv = document.getElementById('message');
+            
+            try {
+                const formData = {
+                    name: document.getElementById('caretakerName').value
+                };
+
+                console.log('Sending data:', formData);
+
+                const response = await fetch('/caretakers', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                console.log('Response:', data);
+
+                if (response.ok) {
+                    messageDiv.className = 'success';
+                    messageDiv.textContent = 'Caretaker added successfully!';
+                    document.getElementById('caretakerForm').reset();
+                } else {
+                    throw new Error(data.error || 'Failed to add caretaker');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                messageDiv.className = 'error';
+                messageDiv.textContent = error.message;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrie</title>
+    
+    <style>
+        /* Basic reset */
+        body, h1, h2, ul, li, p, input, button {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Center the chatbot window */
+        body {
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Chatbot container styling */
+        .chatbot-window {
+            width: 80vw;
+            height: 90vh;
+            background-color: #ffffff;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Chat header */
+        .chat-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* Chat body */
+        .chat-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+
+        /* Chat footer */
+        .chat-footer {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            background-color: #ffffff;
+        }
+
+            .chat-footer input {
+                flex: 1;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                margin-right: 10px;
+            }
+
+            .chat-footer button {
+                padding: 10px 15px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                cursor: pointer;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+            }
+
+                .chat-footer button:hover {
+                    background-color: #45a049;
+                }
+
+        /* Message styling */
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+            .message.user .message-content {
+                background-color: #bde4fc;
+                align-self: flex-end;
+            }
+
+            .message.bot .message-content {
+                background-color: #dff0d8;
+                align-self: flex-start;
+            }
+
+        .message-content {
+            max-width: 70%;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        /* Loading indicator styling */
+        .loading {
+            display: none;
+            color: #666;
+            margin-top: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="chatbot-window">
+        <div class="chat-header">
+            Carrie - Your Medical Health Personal Assistant!
+        </div>
+        <div id="chatBody" class="chat-body">
+            <!-- Chat messages will go here -->
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="inputText" placeholder="Ask a medical question...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+    <!-- Link to the JavaScript file -->
+    <script>
+        // Function to send a message
+        async function sendMessage() {
+            const inputText = document.getElementById('inputText');
+            const chatBody = document.getElementById('chatBody');
+            const userMessage = inputText.value.trim();
+
+            if (!userMessage) return; // Do nothing if input is empty
+
+            // Add user's message to the chat
+            addMessage(userMessage, 'user');
+            inputText.value = ''; // Clear input
+
+            // Show loading text while processing
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'loading';
+            loadingDiv.innerText = 'Processing...';
+            chatBody.appendChild(loadingDiv);
+            chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
+
+            try {
+                // Simulate an API call
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: userMessage })
+                });
+
+                const data = await response.json();
+
+                // Remove the loading text
+                chatBody.removeChild(loadingDiv);
+
+                if (data.error) {
+                    addMessage(`Error: ${data.error}`, 'bot');
+                } else {
+                    addMessage(data.result, 'bot');
+                }
+            } catch (error) {
+                chatBody.removeChild(loadingDiv);
+                addMessage(`Error: ${error.message}`, 'bot');
+            }
+        }
+
+        // Function to add a message to the chat window
+        function addMessage(text, sender) {
+            const chatBody = document.getElementById('chatBody');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            messageContent.innerText = text;
+
+            messageDiv.appendChild(messageContent);
+            chatBody.appendChild(messageDiv);
+            chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
+        }
+
+    </script>
+</body>
+</html>
