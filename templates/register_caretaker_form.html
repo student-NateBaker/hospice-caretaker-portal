@@ -98,6 +98,9 @@
                     messageDiv.className = 'success';
                     messageDiv.textContent = 'Caretaker added successfully!';
                     document.getElementById('caretakerForm').reset();
+                    setTimeout(() => {
+                        window.history.back();
+                    }, 3000);
                 } else {
                     throw new Error(data.error || 'Failed to add caretaker');
                 }

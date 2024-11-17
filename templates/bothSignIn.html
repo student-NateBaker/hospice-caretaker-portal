@@ -2,7 +2,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" rel="stylesheet">
 <html lang="en">
 
 <head>
@@ -15,29 +15,38 @@
 <body>
   <header>
     <div class="logo">
-      <img src="https://i.postimg.cc/VksNwHdt/Care-Haven-Logo.png" id="logo">
-      <h1></h1>
-    </div>
-    <nav>
-      <ul>
-        <li><a href="">Home</a></li>
-        <li><a href="about">About</a></li>
-        <li><a href="login" id = amon>Login</a></li>
-      </ul>
-    </nav>
-  </header>
+    <img src="https://i.postimg.cc/VksNwHdt/Care-Haven-Logo.png" id="logo">
+    <h1></h1>
+  </div> 
+  <div class="nav-container">
+      <nav>
+          <ul>
+              <li><a href="home">Home</a></li>
+              <li><a href="about">About</a></li>
+              <li><a href="bothsignup" id="login">Register</a></li>
+              <li><a href="login" id="login">Log In</a></li>
+              
+          </ul>
+      </nav>
+  </div>
+</header>
 
   <main>
     <div class="card-container">
       <div class="card">
+        <a href="addcaretaker">
         <img src="https://i.postimg.cc/y69xyZMD/nurse-wearing-mask-avatar-clipart-icon-illustration-medical-service-vector.jpg" alt="Caretaker">
-        <h2 id = "amon1"><a href="addcaretaker">Caretaker</a></h2>
+        <h2 id = "amon1">Caretaker</h2>
+        </a>
       </div>
       <div class="card">
+        <a href="addpatient">
         <img src="https://i.postimg.cc/8C0ctBk6/Old-Patient.png" alt="Patient">
         <h2 id = "amon1"><a href="addpatient" >Patient</a></h2>
+      </a>
       </div>
     </div>
+    <button id="chatbot-trigger"> <a href="chat" id="chat" >Chat with <br> Carrie!</a></button>
   </main>
 </body>
 

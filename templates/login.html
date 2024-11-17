@@ -2,17 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="static/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caretaker Login - CareHaven</title>
+    <link rel="stylesheet" href="static/css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="login-container">
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <img src="https://i.postimg.cc/VksNwHdt/Care-Haven-Logo.png" id="logo" alt="CareHaven Logo">
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="home">Home</a></li>
+                <li><a href="about">About</a></li>
+                <li><a href="bothsignup" id="login">Register</a></li>
+                <li><a href="login" id="login">Log In</a></li>
+            </ul>
+            
+        </nav>
+    </header>
+
+    <!-- Login Form Section -->
+    <main class="login-container">
         <h2>Caretaker Login</h2>
         <form id="loginForm">
             <input type="text" id="caretakerName" placeholder="Enter your name" required>
             <button type="submit">Login</button>
+            <p id="errorMessage" class="error hidden"></p>
         </form>
-    </div>
-    <script src="static/js/script.js"></script>
+    </main>
+    <button id="chatbot-trigger"> <a href="chat" id="chat" >Chat with <br> Carrie!</a></button>
+    <script src="static/js/login.js"></script>
 </body>
 </html>

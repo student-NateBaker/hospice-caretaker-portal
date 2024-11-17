@@ -4,23 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caretaker Dashboard</title>
-    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="static/css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="dashboard">
         <header>
             <h2>Welcome, <span id="caretakerName"></span></h2>
         </header>
-
         <main>
             <!-- Patients List Section -->
             <section class="patients-section">
                 <h3>Your Patients</h3>
-                <div id="patientsList"></div> <!-- Changed from ul to div to match JS -->
+                <div id="patientsList" class="patients-list"></div>
             </section>
-
             <!-- Patient Details Section -->
-            <section id="patientDetails" class="hidden">
+            <section id="patientDetails" class="patient-details hidden">
                 <h3>Patient Details</h3>
                 <div class="patient-info">
                     <p><strong>Name:</strong> <span id="patientName"></span></p>
@@ -30,22 +30,17 @@
                     <p><strong>Conditions:</strong> <span id="patientConditions"></span></p>
                     <p><strong>Notes:</strong> <span id="patientNotes"></span></p>
                 </div>
-
-                <!-- Added Caretaker Assignment Section -->
+               
+                <!-- Caretaker Assignment -->
                 <div class="caretaker-assignment">
                     <h4>Assign Caretaker</h4>
-                    <select id="caretakerSelect">
-                        <option value="">Select Caretaker</option>
-                    </select>
+                    <select id="caretakerSelect"></select>
                 </div>
-
-                <button class="back-button" onclick="document.getElementById('patientDetails').classList.add('hidden')">
-                    Back to Patients List
-                </button>
+                <button class="back-button" id="backButton">Back to Patients List</button>
             </section>
         </main>
     </div>
-
+    <button id="chatbot-trigger"> <a href="chat" id="chat" >Chat with <br> Carrie!</a></button>
     <script src="static/js/script.js"></script>
 </body>
 </html>

@@ -142,6 +142,9 @@
                     messageDiv.className = 'success';
                     messageDiv.textContent = 'Patient added successfully!';
                     document.getElementById('patientForm').reset();
+                    setTimeout(() => {
+                        window.history.back();
+                    }, 3000);
                 } else {
                     throw new Error(data.error || 'Failed to add patient');
                 }

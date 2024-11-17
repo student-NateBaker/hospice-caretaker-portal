@@ -69,6 +69,14 @@ with app.app_context():
 def home():
     return render_template('landingPage.html')
 
+@app.route("/home")
+def home2():
+    return render_template('landingPage.html')
+
+@app.route("/about")
+def about():
+    return render_template('about.html')
+
 @app.route("/bothsignup")
 def bothSignUp():
     return render_template('bothSignIn.html')
