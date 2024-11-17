@@ -41,9 +41,40 @@
             background-color: #4CAF50;
             color: white;
             padding: 10px;
-            text-align: center;
+            display: flex;
+            align-items: center;
             font-size: 18px;
             font-weight: bold;
+        }
+
+        /* Back button styling */
+        .back-button {
+            background-color: transparent;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+            transition: opacity 0.3s;
+        }
+
+        .back-button:hover {
+            opacity: 0.8;
+        }
+
+        /* Back arrow symbol */
+        .back-arrow {
+            margin-right: 5px;
+            font-size: 20px;
+        }
+
+        /* Header title container */
+        .header-title {
+            flex: 1;
+            text-align: center;
         }
 
         /* Chat body */
@@ -115,13 +146,17 @@
             color: #666;
             margin-top: 5px;
         }
-
     </style>
 </head>
 <body>
     <div class="chatbot-window">
         <div class="chat-header">
-            Carrie - Your Medical Health Personal Assistant!
+            <button onclick="goBack()" class="back-button">
+                <span class="back-arrow">←</span> Back
+            </button>
+            <div class="header-title">
+                Carrie - Your Medical Health Personal Assistant!
+            </div>
         </div>
         <div id="chatBody" class="chat-body">
             <!-- Chat messages will go here -->
@@ -133,6 +168,18 @@
     </div>
     <!-- Link to the JavaScript file -->
     <script>
+        // Function to go back to previous page
+        function goBack() {
+            window.history.back();
+        }
+
+        // Add event listener for Enter key
+        document.getElementById('inputText').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
         // Function to send a message
         async function sendMessage() {
             const inputText = document.getElementById('inputText');
@@ -189,7 +236,6 @@
             chatBody.appendChild(messageDiv);
             chatBody.scrollTop = chatBody.scrollHeight; // Auto-scroll to the bottom
         }
-
     </script>
 </body>
 </html>

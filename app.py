@@ -89,7 +89,7 @@ def patient():
 def caretaker():
     return render_template('register_caretaker_form.html')
 
-@app.route("/chatbot")
+@app.route("/chat")
 def chatbot():
     return render_template('chatbot2.html')
 
