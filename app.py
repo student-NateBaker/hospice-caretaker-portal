@@ -6,7 +6,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-genai.configure(api_key='AIzaSyDxQuot2fA5Ks1OrL_QdN_fP9YjAibGCQ0')
+genai.configure(api_key='GEMINI_API_KEY_HERE')
 
 
 
